@@ -6,21 +6,22 @@ import { EntityNotFoundExceptionFilter } from './exception-filters/entity-not-fo
 import { QueryFailedErrorExceptionFilter } from './exception-filters/query-failed-error-exception.filter';
 
 async function bootstrap() {
-  // const httpsOptions = {
-  //   key: readFileSync('../ssl/server.key'),
-  //   cert: readFileSync('../ssl/server.crt'),
-  // };
-  const app = await NestFactory.create(AppModule, {
-    // httpsOptions: httpsOptions
+  const httpsOptions = {
+    key: readFileSync('../ssl/server.key'),
+    cert: readFileSync('../ssl/server.crt'),
+  };
+  const app = await NestFactory.create(AppModule,{
+    httpsOptions: httpsOptions
   });
   app.enableCors();
   app.useGlobalPipes(new ValidationPipe({
     whitelist: true
   }));
+    const port = process.env.PORT;
   app.useGlobalFilters(
     new EntityNotFoundExceptionFilter(),
     new QueryFailedErrorExceptionFilter()
   );
-  await app.listen(3000);
+  await app.listen(port);
 }
 bootstrap();

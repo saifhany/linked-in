@@ -63,7 +63,7 @@ export class JobsService {
         const creatorPromise = this.usersService.findOne(creatorId);
         const companyPromise = this.companiesService.findById(companyId);
         const [creator, company] = await Promise.all([creatorPromise, companyPromise]);
-        if (!creator.experiences.some(e => e.company.id === company.id)) {
+        if ( !creator.experiences.some(e => e.company.id === company.id) ) {
             throw new BadRequestException("Request user does not work at the requested company.")
         }
         const jobAlertObj = this.jobAlertsRepository.create(restJobAlertData);
